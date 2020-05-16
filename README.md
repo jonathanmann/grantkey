@@ -3,6 +3,9 @@
 ## Overview
 GrantKey is software that allows any guarantor to issue reputation-backed digital credit grants which can be used by anyone willing to accepting them. If multiple parties trust a the guarantor, but not each other, this software will allow the guarantor to function as a clearinghouse by which credit backed by the guarantor can be transferred from one party to another. 
 
+## Technical Description
+The guarantor begins by issuing credit grants to the public key personas of the users of the service each grant is digitally signed by the guarantor. When the users want to exchange portions of their credit grants, they simply submit a digitally signed request the guarantor's clearinghouse API (provided as part of this project). As long as the requestor has sufficient grant credit as validated by the guarantor's tracking database (also provided by this project), the API will automatically validate the transaction and present a guarantor signed authorization and the grant balances for the transacting parties will be updated in the guarantor's tracking database.
+
 ## Roadmap
 ### Improved Documentation
 ### Grant Ledger Database
@@ -10,3 +13,4 @@ GrantKey is software that allows any guarantor to issue reputation-backed digita
 ### Automated Transaction Signing
 ### Guarantor Clearinghouse Server
 ### Smart Contracts
+### Interoperability Protocols
