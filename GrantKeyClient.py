@@ -41,6 +41,9 @@ class GrantKeyClient:
                 f.write(public_key.exportKey('PEM'))
         return public_key
 
+    def get_recipient_key(self,key_path):
+        return RSA.importKey(open(key_path,'r').read())
+
     def get_msg_hash(self,msg):
         return SHA256.new(str.encode(msg))
 
@@ -68,19 +71,31 @@ class GrantKeyClient:
     def export_validation_signature(self,export_path):
         pass
 
-    def export_transaction(self,recipient_key,amount='0',denomination='flops'):
+    def export_transaction(self,recipient_key,amount=0,message='',denomination='flops'):
+        fields = [
+                'ID',
+                'UTC Timestamp', 
+                'Sender Public Key',
+                'Recipient Public Key',
+                'Amount',
+                'Message',
+                'Denomination',
+                'Signature',
+                ]
+        
         tran = [
                 str(uuid.uuid4()),
                 str(datetime.utcnow()),
-                str(self.public_key),
-                recipient_key,
-                amount,
+                str(self.public_key.exportKey('PEM'),'utf8'),
+                str(recipient_key.exportKey('PEM'),'utf8'),
+                str(amount),
+                message,
                 denomination,
                 ]
-        
-        signature = self.get_msg_signature(','.join(tran))
+        signature = self.get_msg_signature('\t'.join(tran))
         tran.append(str(signature))
-        return ','.join(tran)
+        a = [fields[i] + ":\n" + e for i,e in enumerate(tran)]
+        return '\n\n'.join(a)
 
     def validate_file(self,validation_key,validation_signature,file_path):
         pass
@@ -89,6 +104,7 @@ if __name__ == '__main__':
     g = GrantKeyClient()
     s = g.get_msg_signature('hello world')
     k = g.public_key
+    r = g.get_recipient_key('config/pubkey2.pem')
     print(g.validate_signature('hello world',s,k))
-    print(g.export_transaction(''))
+    print(g.export_transaction(r,100))
 
