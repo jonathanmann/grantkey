@@ -16,6 +16,7 @@ uuid,timestamp,sender public key, recipient public key, amount, denomination, an
 ## Roadmap
 ### Improved Documentation
 ### Grant Ledger Database
+### Transaction History Audit API
 ### Simple Key Integration
 ### Automated Transaction Signing
 ### Guarantor Clearinghouse Server

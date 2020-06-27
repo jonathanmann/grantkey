@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>grantkey</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" href="img/favicon.ico" type="image/gif" sizes="40x40">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Sans:wght@625&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Puritan&display=swap" rel="stylesheet">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  <style>
+   body {
+    font-family: 'Roboto Condensed', sans-serif;
+    background-color: #333333;
+   }
+  .navbar {
+    padding-top: 15px;
+    padding-bottom: 15px;
+    border: 0;
+    border-radius: 0;
+    margin-bottom: 0;
+    font-family: 'Fira Sans', sans-serif;
+    font-size: 1.75em;
+    letter-spacing: 0px;
+    background-color: white;
+    padding-bottom: 75px;
+    margin-top:10px;
+  }
+  .navbar-brand {
+    font-size: 1.4em;
+   }
+   .navbar-nav li {
+    margin-left:37px;
+   }
+  .bg-4 { 
+    padding-top:50px;
+    background-color: #333333;
+    color: #ddd;
+  }
+  </style>
+</head>
+<body>
+<!-- Navbar -->
+<nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <div class="col-md-1"></div>
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>                        
+      </button>
+      <a class="navbar-brand" href="https://grantkey.com" style="color:#333333;">grantkey</a>
+    </div>
+    <div class="collapse navbar-collapse" id="myNavbar">
+      <ul class="nav navbar-nav navbar-left">
+        <li><a href="client_demo.html" style="color:#999999;">client</a></li>
+        <li><a href="https://github.com/jonathanmann/grantkey" style="color:#999999;">server</a></li>
+        <li><a href="https://github.com/jonathanmann/grantkey" style="color:#999999;">github</a></li>
+        <li><a href="https://github.com/jonathanmann/grantkey" style="color:#999999;">contact</a></li>
+        <li><a href="https://github.com/jonathanmann/grantkey" style="color:#999999;">docs</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- First Container -->
+<div class="container-fluid bg-1 text-left" style="background-color:white;padding-bottom:100px;">
+    <div class="col-md-1"></div>
+    <div class="col-md-4">
+        <h1 style="font-size:2.9em; margin-bottom:30px;">Grantkey is a
+P2P credit and contract platform</h1>
+        <p style="color:#999999; font-size:1.1em; margin-bottom:40px;font-family: 'Puritan', sans-serif;">Grantkey is an automated clearinghouse platform allowing any party to grant reputation-backed credit which can be exchanged via smart contract by any two parties who trust the issuer.</p>
+  <a href="https://github.com/jonathanmann/grantkey" class="btn btn-warning btn-lg" style="color: #fff;width:280px;">CONNECT TO NETWORK</a>
+    </div>
+    <div class="col-md-1"></div>
+    <div class="col-md-4">
+        <img src="img/validation_example.png" style="width:99%" alt="Example">
+    </div>
+</div>
+
+<!-- Third Container (Grid) -->
+<div class="container-fluid bg-4 text-center">    
+  <div class="row">
+    <div class="col-sm-1"></div>
+    <div class="col-sm-3">
+      <h3> 
+        <span class="glyphicon glyphicon-flash"></span>
+        Fast
+      </h3>
+      <p>By shifting away from whole-network validation to a trusted guarantor, Grantkey processes transactions at lightning speed with no limits on scalability.</p>
+    </div>
+    <div class="col-sm-4"> 
+      <h3> 
+        <span class="glyphicon glyphicon-check"></span>
+        Verifiable
+      </h3>
+      <p>All transactions are digitally signed proving the digital identity of each party. The network guarantor provides an immutable ledger detailing all transactions and balances over a provided time period.</p>
+        <!--
+        <img src="img/profile2.png" class="img-responsive img-circle" style="display:inline" alt="Example" width="30%">
+        <p> - bla bla bla</p>
+        -->
+    </div>
+    <div class="col-sm-3"> 
+      <h3> 
+        <span class="glyphicon glyphicon-lock"></span>
+        Secure
+      </h3>
+      <p>Each transaction is automatically validated by the mutually trusted guarator upholding digital contracts and preventing double spend attacks.</p>
+    </div>
+  </div>
+</div>
+
+<!-- Footer -->
+<footer class="container-fluid bg-4 text-center">
+  <p>Copyright &copy; 2020 <a href="https://grantkey.com" style="color:white;">grantkey.com</a></p> 
+</footer>
+
+</body>
+</html>
