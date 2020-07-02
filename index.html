@@ -6,41 +6,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="icon" href="img/favicon.ico" type="image/gif" sizes="40x40">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="css/style.css">
   <link href="https://fonts.googleapis.com/css2?family=Fira+Sans:wght@600&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@700&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Puritan&display=swap" rel="stylesheet">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-  <style>
-   body {
-    font-family: 'Roboto Condensed', sans-serif;
-    background-color: #333333;
-   }
-  .navbar {
-    padding-top: 15px;
-    padding-bottom: 15px;
-    border: 0;
-    border-radius: 0;
-    margin-bottom: 0;
-    font-family: 'Fira Sans', sans-serif;
-    font-size: 1.75em;
-    letter-spacing: 0px;
-    background-color: white;
-    padding-bottom: 75px;
-    margin-top:10px;
-  }
-  .navbar-brand {
-    font-size: 1.4em;
-   }
-   .navbar-nav li {
-    margin-left:37px;
-   }
-  .bg-4 { 
-    padding-top:50px;
-    background-color: #333333;
-    color: #ddd;
-  }
-  </style>
 </head>
 <body>
 <!-- Navbar -->
@@ -57,21 +28,22 @@
     </div>
     <div class="collapse navbar-collapse" id="myNavbar">
       <ul class="nav navbar-nav navbar-left">
+        <li><a href="#features" style="color:#999999;">features</a></li>
         <li><a href="client_demo.html" style="color:#999999;">client</a></li>
-        <li><a href="https://github.com/jonathanmann/grantkey" style="color:#999999;">server</a></li>
+        
         <li><a href="https://github.com/jonathanmann/grantkey" style="color:#999999;">github</a></li>
         <li><a href="https://github.com/jonathanmann/grantkey" style="color:#999999;">contact</a></li>
-        <li><a href="https://github.com/jonathanmann/grantkey" style="color:#999999;">docs</a></li>
+        <li><a href="https://github.com/jonathanmann/grantkey" style="color:#999999;">about</a></li>
       </ul>
     </div>
   </div>
 </nav>
 
 <!-- First Container -->
-<div class="container-fluid bg-1 text-left" style="background-color:white;padding-bottom:100px;">
+<div class="container-fluid bg-1 text-left">
     <div class="col-md-1"></div>
     <div class="col-md-4">
-        <h1 style="font-size:2.9em; margin-bottom:30px;">Grantkey is a
+        <h1>Grantkey is a
 P2P credit and contract platform</h1>
         <p style="color:#999999; font-size:1.1em; margin-bottom:40px;font-family: 'Puritan', sans-serif;">Grantkey is an automated clearinghouse platform allowing any party to grant reputation-backed credit which can be exchanged via smart contract by any two parties who trust the issuer.</p>
   <a href="https://github.com/jonathanmann/grantkey" class="btn btn-warning btn-lg" style="color: #fff;width:280px;">CONNECT TO NETWORK</a>
@@ -80,6 +52,139 @@ P2P credit and contract platform</h1>
     <div class="col-md-4">
         <img src="img/validation_example.png" style="width:99%" alt="Example">
     </div>
+</div>
+
+
+
+
+
+<!--<div class="container-fluid bg-1 text-center" style="background-color:#f7f7f7ff">-->
+<div class="container-fluid bg-4 text-center">
+  <div class="row">
+    <div class="col-sm-1"></div>
+    <div class="col-sm-3">
+      <h3> 
+        <span class="glyphicon glyphicon-flash"></span>
+        Fast
+      </h3>
+      <p>By shifting away from whole-network validation to a trusted guarantor, Grantkey processes transactions at lightning speed with no limits on scalability.</p>
+    </div>
+
+    <div class="col-sm-4"> 
+      <h3> 
+        <span class="glyphicon glyphicon-check"></span>
+        Verifiable
+      </h3>
+      <p>All transactions are digitally signed proving the digital identity of each party. The network guarantor provides an immutable ledger detailing all transactions and balances over a provided time period.</p>
+        <!--
+        <img src="img/profile2.png" class="img-responsive img-circle" style="display:inline" alt="Example" width="30%">
+        <p> - bla bla bla</p>
+        -->
+    </div>
+
+    <div class="col-sm-3"> 
+      <h3> 
+        <span class="glyphicon glyphicon-lock"></span>
+        Secure
+      </h3>
+      <p>Each transaction is automatically validated by the mutually trusted guarator upholding digital contracts and preventing double spend attacks.</p>
+    </div>
+  </div>
+</div>
+<div style="background-color:white;width:100%">
+    <div class="cornered-down"></div>
+</div>
+
+
+<!-- 
+<div class="col-md-12" style="background-color:silver;padding-top:1px;"></div>
+-->
+
+
+
+<!-- Second Container (Grid) -->
+<div class="container-fluid bg-1 text-left">  
+  <div class="col-md-1"></div><div class="col-md-10 text-center"><a id="features"><h1> Features</h1></a></div>
+  <div class="col-md-1"></div>
+  <div class="col-md-6">
+        <div class="card shadow">
+            <div class="card-header border-0">
+              <h4> Transaction Ledger <span class="glyphicon glyphicon-transfer"></span></h4>
+            </div>
+            <div class="table-responsive">
+              <table class="table align-items-center">
+                <thead class="thead-light">
+                  <tr>
+                    <th scope="col" style="padding-left:25px;">CONTRACT</th>
+                    <th scope="col">ORIGIN</th>
+                    <th scope="col">DESTINATION</th>
+                    <th scope="col">VALUE</th>
+                    <th scope="col">VALIDATION</th>
+                    <th scope="col">PROOF</th>
+                  </tr>
+                </thead>
+                  <tbody>
+                    <tr>
+                      <td><img src="img/grantkeylogo.png" class="img-fluid" alt="Responsive image"></td>
+                      <td>0xe18a34ae</td>
+                      <td>0xfdc46280</td>
+                      <td>300.00</td>
+                      <td class="approved"><span class="green-dot"></span>Approved</td>
+                      <td><span class="glyphicon glyphicon-ok-circle"></span></td>
+                    </tr>
+                    <tr>
+                      <td><img src="img/grantkeylogo.png" class="img-fluid" alt="Responsive image"></td>
+                      <td>0xd2c742939</td>
+                      <td>0x89cfe363f</td>
+                      <td>100.00</td>
+                      <td class="approved"><span class="green-dot"></span>Approved</td>
+                      <td><span class="glyphicon glyphicon-ok-circle"></span></td>
+                    </tr>
+                    <tr>
+                      <td><img src="img/grantkeylogo.png" class="img-fluid" alt="Responsive image"></td>
+                      <td>0xc74293925</td>
+                      <td>0x61f38e18a</td>
+                      <td>250.00</td>
+                      <td class="rejected"><span class="red-dot"></span>Rejected</td>
+                      <td><span class="glyphicon glyphicon-remove-circle"></span></td>
+                    </tr>
+                    <tr>
+                      <td><img src="img/grantkeylogo.png" class="img-fluid" alt="Responsive image"></td>
+                      <td>0xe18a34ae</td>
+                      <td>0xfdc46280</td>
+                      <td>150.00</td>
+                      <td class="approved"><span class="green-dot"></span>Approved</td>
+                      <td><span class="glyphicon glyphicon-ok-circle"></span></td>
+                    </tr>
+                   <tr>
+                      <td><img src="img/grantkeylogo.png" class="img-fluid" alt="Responsive image"></td>
+                      <td>0xc74293925</td>
+                      <td>0x61f38e18a</td>
+                      <td>100.00</td>
+                      <td class="pending"><span class="blue-dot"></span>Pending</td>
+                      <td><span class="glyphicon glyphicon-time"></span></td>
+                    </tr>
+                  </tbody>
+                </table>
+            </div>
+        </div>
+  </div>
+  <div class="col-md-5">
+    <h3><span class="glyphicon glyphicon-ok-circle"></span> Web-Based Client</h3><p> All transactions can be performed in the browser making interaction with the network fast, simple, and secure. Use web client to generate a key pair, store the private key in a secure location, and join the network by connecting to a trusted guarantor.</p>
+    <h3><span class="glyphicon glyphicon-ok-circle"></span> Credit and Smart-Contracts</h3><p>Smart-contracts can be used to transfer credit based on the criteria specified in the contract. Since all transactions are automatically validated by a trusted guarantor, contract validation is almost instantaneous.</p>
+    <h3><span class="glyphicon glyphicon-ok-circle"></span> Verified Immutable Transactions</h3><p>The guarantor publishes transactions to a blockchain allowing any user to audit the veracity of the network.</p>
+    <!--<h3><span class="glyphicon glyphicon-ok-circle"></span> Secure Assymentric Cryptography</h3><p>Based on public</p>-->
+    <h3><span class="glyphicon glyphicon-ok-circle"></span> Open Source</h3><p>A trusted open source code base that can be audited for vulnerabilities.</p>
+  </div>
+</div>
+
+
+
+<div style="background-color:white;width:100%">
+  <div class="col-md-6" style="padding-top:80px;background-color:white;"></div>
+  <div class="col-md-6"  style="padding-left:0px;">
+    <div class="cornered-up"></div>
+  </div>
 </div>
 
 <!-- Third Container (Grid) -->
