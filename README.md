@@ -22,3 +22,6 @@ uuid,timestamp,sender public key, recipient public key, amount, denomination, an
 ### Guarantor Clearinghouse Server
 ### Smart Contracts
 ### Interoperability Protocols
+
+# About
+This project was created as part of my masters research at NYU for _CS-GY 9963 Advanced Project in Computer Science_. The intent is to provide a functional prototype of the architecture described in my research. It is my hope that others will build on this research and either fork this project or create their own implementations. For more information please visit the website I created for this project, [grantkey.com](https://www.grantkey.com).
