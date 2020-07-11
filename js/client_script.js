@@ -44,6 +44,26 @@ function generate() {
     });
 }
 
+function save() {
+    /*
+    var a = document.createElement("a");
+    var file = new Blob([privateKeyJson], {type: 'text/plain'});
+    a.href = URL.createObjectURL('keystore.dat');
+    a.download = fileName;
+    a.click();
+*/
+var json_data = {"key":"value"}
+var dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(privateKeyJson));
+var dlAnchorElem = document.getElementById('downloadAnchorElem');
+dlAnchorElem.setAttribute("href",     dataStr     );
+//alert('ok1')
+dlAnchorElem.setAttribute("download", "keys.txt");
+//alert('ok2')
+dlAnchorElem.click();
+//alert('ok3')
+
+}
+
 function sign() {
     var cryptoObj = window.crypto || window.msCrypto;
 
@@ -71,7 +91,7 @@ function sign() {
 }
 
 function verify() {
-
+var start = new Date();
 var cryptoObj = window.crypto || window.msCrypto;
 
 if(!cryptoObj)
@@ -98,7 +118,8 @@ window.crypto.subtle.verify({
         asciiToUint8Array(transData)
     )
     .then(function(decrypted) {
-        alert("Verified   " + decrypted);
+        var elapsed = new Date() - start
+        alert("Verified   " + decrypted + " in " + elapsed + " ms");
     })
     .catch(function(err) {
         console.error(err);
@@ -142,6 +163,22 @@ function hexStringToUint8Array(hexString) {
     return arrayBuffer;
 }
 
-function failAndLog(error) {
-    console.log(error);
+
+
+/*
+function download(filename, text) {
+  var element = document.createElement('a');
+  element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+  element.setAttribute('download', filename);
+
+  element.style.display = 'none';
+  document.body.appendChild(element);
+
+  element.click();
+
+  document.body.removeChild(element);
 }
+
+// Start file download.
+download("hello.json","File content");
+*/
