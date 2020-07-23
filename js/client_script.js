@@ -28,40 +28,57 @@ function generate() {
         
         window.crypto.subtle.exportKey("jwk", key.publicKey).then(
             function(keydata) {
-                publicKeyhold = keydata;
-                publicKeyJson = JSON.stringify(publicKeyhold);
-                document.getElementById("public").value = publicKeyJson;
+                publicKeyJson = JSON.stringify(keydata);
+                //document.getElementById("public").value = publicKeyJson;
             }
         );
 
         window.crypto.subtle.exportKey("jwk", key.privateKey).then(
             function(keydata) {
-                privateKeyhold = keydata;
-                privateKeyJson = JSON.stringify(privateKeyhold);
-                document.getElementById("private").value = privateKeyJson;
+                privateKeyJson = JSON.stringify(keydata);
+                //document.getElementById("private").value = privateKeyJson;
             }
         );
     });
 }
 
-function save() {
-    /*
-    var a = document.createElement("a");
-    var file = new Blob([privateKeyJson], {type: 'text/plain'});
-    a.href = URL.createObjectURL('keystore.dat');
-    a.download = fileName;
-    a.click();
-*/
-var json_data = {"key":"value"}
-var dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(privateKeyJson));
-var dlAnchorElem = document.getElementById('downloadAnchorElem');
-dlAnchorElem.setAttribute("href",     dataStr     );
-//alert('ok1')
-dlAnchorElem.setAttribute("download", "keys.txt");
-//alert('ok2')
-dlAnchorElem.click();
-//alert('ok3')
+function save_key(key_type) {
+    
+    if(!publicKey)
+    {
+        alert("Generate Keys First")
+        return;
+    }
 
+    var key;
+    if (key_type == "private"){
+        key = privateKeyJson;
+    } else {
+        key = publicKeyJson;
+    }
+    var a = document.createElement("a");
+    var dataStr = "data:application/json;charset=utf-8," + encodeURIComponent(key);
+    a.setAttribute("href",     dataStr     );
+    a.setAttribute("download", key_type + "-key.jwk");
+    a.click();
+}
+
+function save_keys() {
+    
+    if(!publicKey)
+    {
+        alert("Generate Keys First")
+        return;
+    }
+
+    //var keys = {};
+    //keys["private"] = privateKey;
+    //keys["public"] = publicKey;
+    var a = document.createElement("a");
+    var dataStr = "data:application/json;charset=utf-8," + '{"private":' + privateKeyJson + ',"public":' + publicKeyJson + "}";
+    a.setAttribute("href",     dataStr     );
+    a.setAttribute("download", "key_pair.json");
+    a.click();
 }
 
 function sign() {
@@ -74,6 +91,8 @@ function sign() {
     }
 
     var transData = document.getElementById("transData").value;
+
+    //console.log(privateKey);
 
     window.crypto.subtle.sign({
             name: ENCRYPTION_STANDARD,
@@ -163,22 +182,46 @@ function hexStringToUint8Array(hexString) {
     return arrayBuffer;
 }
 
-
-
-/*
-function download(filename, text) {
-  var element = document.createElement('a');
-  element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
-  element.setAttribute('download', filename);
-
-  element.style.display = 'none';
-  document.body.appendChild(element);
-
-  element.click();
-
-  document.body.removeChild(element);
+async function bImportKey(k,usage) {
+    const algo = {
+        name: ENCRYPTION_STANDARD,
+        saltLength: SALT_SIZE,
+        modulusLength: 2048, 
+        publicExponent: new Uint8Array([0x01, 0x00, 0x01]),
+        hash: { name: 'SHA-256' }
+    };
+    return await window.crypto.subtle.importKey('jwk', k, algo, true, usage);
 }
 
-// Start file download.
-download("hello.json","File content");
-*/
+async function importKeyFile(keyType) {
+    var keyView = document.getElementById(keyType);
+    var file = document.querySelector('#' + keyType + '-key-file').files[0];
+    var reader = new FileReader()
+    reader.onload = function (event) {
+        keyView.value = event.target.result;
+
+        if (keyType == 'private'){
+            bImportKey(JSON.parse(keyView.value),["sign"]).then(result => {privateKey = result})
+        } else {
+            bImportKey(JSON.parse(keyView.value),["verify"]).then(result => {publicKey = result})
+        }
+
+    }
+    reader.readAsText(file);
+}
+
+function importKeys() {
+    var file = document.querySelector('#key-file').files[0];
+    var reader = new FileReader()
+    reader.onload = function (event) {        
+        var keypair = JSON.parse(event.target.result);  
+        var privKey = keypair["private"]
+        var pubKey = keypair["public"]
+        document.getElementById("private").value = JSON.stringify(privKey);
+        document.getElementById("public").value = JSON.stringify(pubKey);      
+        bImportKey(privKey,["sign"]).then(result => {privateKey = result});
+        bImportKey(pubKey,["verify"]).then(result => {publicKey = result});
+
+    }
+    reader.readAsText(file);
+}

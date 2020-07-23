@@ -9,16 +9,27 @@
     <a href="https://www.grantkey.com"><h1>GrantKey Client Demo</h1></a>
 
     <div>
-        Transaction Data: <input type="text" class="form-control" name="transData" value="grant key text demo" id="transData">
+        Import Keys: <input id="key-file" type="file" onchange="importKeys()"><br>
+        <!--
+        Import Public Key: <input id="public-key-file" type="file" onchange="importKeyFile('public')"><br>
+        Import Private Key: <input id="private-key-file" type="file" onchange="importKeyFile('private')"><br>
+        -->
+        Transaction Data: <input type="text" class="form-control" name="transData" value="grant key text demo" id="transData"><br>
         <button type="button" class="btn btn-primary" onclick="generate()">Generate Keys</button>
-        <button type="button" class="btn btn-primary" onclick="save()">Save Keys</button>
+        <!--
+        <button type="button" class="btn btn-primary" onclick="save_key('private')">Save Private Key</button>
+        <button type="button" class="btn btn-primary" onclick="save_key('public')">Save Public Key</button>
+        -->
+        <button type="button" class="btn btn-primary" onclick="save_keys()">Save Keys</button><br>
+        
         <button type="button" class="btn btn-primary" onclick="sign()">Sign</button>
         <button type="button" class="btn btn-primary" onclick="verify()">Verify Signature </button>
+        
     </div>
     <div>
         Signature: <input class="form-control" type="text" size="90" name="encryptedData" id="encryptedData" readonly="true"><br>
         Public Key: <textarea class="form-control" readonly="true" name="public" id="public" cols="30" rows="10"> </textarea><br>
         Private Key: <textarea class="form-control" readonly="true" name="private" id="private" cols="30" rows="10"></textarea>
     </div>
-    <a id="downloadAnchorElem"></a>
+    
 </body>
