@@ -2,6 +2,8 @@ var ENCRYPTION_STANDARD = "RSA-PSS"
 var SALT_SIZE = 128
 var privateKey;
 var publicKey;
+var publicKeyJson;
+var privateKeyJson;
 
 function asciiToUint8Array(str) {
     var chars = [];
@@ -50,16 +52,19 @@ function save_key(key_type) {
         return;
     }
 
-    var key;
+    var key = {};
     if (key_type == "private"){
         key = privateKeyJson;
     } else {
+        //console.log(publicKey);
         key = publicKeyJson;
+        console.log(key);
     }
     var a = document.createElement("a");
-    var dataStr = "data:application/json;charset=utf-8," + encodeURIComponent(key);
+    var dataStr = "data:application/json;charset=utf-8," + key;
+    console.log(dataStr)
     a.setAttribute("href",     dataStr     );
-    a.setAttribute("download", key_type + "-key.jwk");
+    a.setAttribute("download", key_type + "-key.json");
     a.click();
 }
 
@@ -217,6 +222,8 @@ function importKeys() {
         var keypair = JSON.parse(event.target.result);  
         var privKey = keypair["private"]
         var pubKey = keypair["public"]
+        privateKeyJson = JSON.stringify(privKey);
+        publicKeyJson = JSON.stringify(pubKey);
         document.getElementById("private").value = JSON.stringify(privKey);
         document.getElementById("public").value = JSON.stringify(pubKey);      
         bImportKey(privKey,["sign"]).then(result => {privateKey = result});
