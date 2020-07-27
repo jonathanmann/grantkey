@@ -2,8 +2,10 @@ var ENCRYPTION_STANDARD = "RSA-PSS"
 var SALT_SIZE = 128
 var privateKey;
 var publicKey;
+var recipientKey;
 var publicKeyJson;
 var privateKeyJson;
+var recipientKeyJson;
 
 function asciiToUint8Array(str) {
     var chars = [];
@@ -31,14 +33,16 @@ function generate() {
         window.crypto.subtle.exportKey("jwk", key.publicKey).then(
             function(keydata) {
                 publicKeyJson = JSON.stringify(keydata);
-                //document.getElementById("public").value = publicKeyJson;
+                // remove for prod
+                document.getElementById("public").value = publicKeyJson;
             }
         );
 
         window.crypto.subtle.exportKey("jwk", key.privateKey).then(
             function(keydata) {
                 privateKeyJson = JSON.stringify(keydata);
-                //document.getElementById("private").value = privateKeyJson;
+                // remove for prod
+                document.getElementById("private").value = privateKeyJson;
             }
         );
     });
@@ -58,11 +62,11 @@ function save_key(key_type) {
     } else {
         //console.log(publicKey);
         key = publicKeyJson;
-        console.log(key);
+        //console.log(key);
     }
     var a = document.createElement("a");
     var dataStr = "data:application/json;charset=utf-8," + key;
-    console.log(dataStr)
+    //console.log(dataStr)
     a.setAttribute("href",     dataStr     );
     a.setAttribute("download", key_type + "-key.json");
     a.click();
@@ -94,20 +98,30 @@ function sign() {
         alert("Unsupported Browser");
         return;
     }
+    
+    if(!recipientKey){
+        alert("Please add a recipient");
+        return;
+    }
 
     var transData = document.getElementById("transData").value;
 
-    //console.log(privateKey);
+    var tx = {"recipientKey":JSON.parse(recipientKeyJson)["n"],"credit":parseFloat(transData)};
 
     window.crypto.subtle.sign({
             name: ENCRYPTION_STANDARD,
             saltLength: SALT_SIZE,
         },
         privateKey,
-        asciiToUint8Array(transData) 
+        asciiToUint8Array(JSON.stringify(tx)) 
     )
     .then(function(signature) {
-        document.getElementById("encryptedData").value = bytesToHexString(signature);
+        var sig = bytesToHexString(signature);
+        document.getElementById("encryptedData").value = sig;
+        tx["signature"] = sig;
+        tx["senderKey"] = JSON.parse(publicKeyJson)
+        console.log(tx);
+        //;
     })
     .catch(function(err) {
         console.error(err);
@@ -126,6 +140,7 @@ if(!cryptoObj)
 
 var encryptedData = document.getElementById("encryptedData").value;
 var transData = document.getElementById("transData").value;
+var tx = {"recipientKey":JSON.parse(recipientKeyJson)["n"],"credit":parseFloat(transData)};
 
 if(!publicKey)
 {
@@ -139,7 +154,7 @@ window.crypto.subtle.verify({
         },
         publicKey, 
         hexStringToUint8Array(encryptedData), 
-        asciiToUint8Array(transData)
+        asciiToUint8Array(JSON.stringify(tx))
     )
     .then(function(decrypted) {
         var elapsed = new Date() - start
@@ -211,6 +226,19 @@ async function importKeyFile(keyType) {
             bImportKey(JSON.parse(keyView.value),["verify"]).then(result => {publicKey = result})
         }
 
+    }
+    reader.readAsText(file);
+}
+
+async function importRecipientKey() {
+    var keyView = document.getElementById('recipient');
+    var file = document.querySelector('#recipient-key-file').files[0];
+    var reader = new FileReader()
+    reader.onload = function (event) {
+        keyView.value = event.target.result;
+        //document.getElementById("recipient").value = JSON.stringify(privKey)
+        recipientKeyJson = event.target.result;
+        bImportKey(JSON.parse(keyView.value),["verify"]).then(result => {recipientKey = result})
     }
     reader.readAsText(file);
 }

@@ -9,28 +9,35 @@
     <a href="https://www.grantkey.com"><h1>GrantKey Client Demo</h1></a>
 
     <div>
-        Import Keys: <input id="key-file" type="file" onchange="importKeys()"><br>
+        
+        Import Personal Keys: <input id="key-file" type="file" onchange="importKeys()"> OR <button type="button" class="btn btn-primary" onclick="generate()">Generate New Personal Keys</button><br>
+        Import Recipient Public Key: <input id="recipient-key-file" type="file" onchange="importRecipientKey()"><br>
         <!--
         Import Public Key: <input id="public-key-file" type="file" onchange="importKeyFile('public')"><br>
         Import Private Key: <input id="private-key-file" type="file" onchange="importKeyFile('private')"><br>
         -->
-        Transaction Data: <input type="text" class="form-control" name="transData" value="grant key text demo" id="transData"><br>
-        <button type="button" class="btn btn-primary" onclick="generate()">Generate Keys</button>
-        <button type="button" class="btn btn-primary" onclick="save_key('public')">Save Public Key</button>
+        Recipient Key: <textarea class="form-control" readonly="true" name="recipient" id="recipient" cols="30" rows="10"></textarea><br>
+        Credit: <input type="number" class="form-control" name="transData" min="0" value="0" id="transData"><br>
+        Signature: <input class="form-control" type="text" size="90" name="encryptedData" id="encryptedData" readonly="true"><br>
+        
+        
         <!--
         <button type="button" class="btn btn-primary" onclick="save_key('private')">Save Private Key</button>
         
         -->
-        <button type="button" class="btn btn-primary" onclick="save_keys()">Save Keys</button><br>
+        
         
         <button type="button" class="btn btn-primary" onclick="sign()">Sign</button>
         <button type="button" class="btn btn-primary" onclick="verify()">Verify Signature </button>
         
     </div>
     <div>
-        Signature: <input class="form-control" type="text" size="90" name="encryptedData" id="encryptedData" readonly="true"><br>
+        
         Public Key: <textarea class="form-control" readonly="true" name="public" id="public" cols="30" rows="10"> </textarea><br>
-        Private Key: <textarea class="form-control" readonly="true" name="private" id="private" cols="30" rows="10"></textarea>
+        Private Key: <textarea class="form-control" readonly="true" name="private" id="private" cols="30" rows="10"></textarea><br>
+        <button type="button" class="btn btn-primary" onclick="save_keys()">Save Keys</button><br>
+        <button type="button" class="btn btn-primary" onclick="save_key('public')">Export Public Key</button>
+        
     </div>
     
 </body>
