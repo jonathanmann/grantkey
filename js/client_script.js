@@ -6,6 +6,7 @@ var recipientKey;
 var publicKeyJson;
 var privateKeyJson;
 var recipientKeyJson;
+var transactionJson;
 
 function asciiToUint8Array(str) {
     var chars = [];
@@ -90,6 +91,14 @@ function save_keys() {
     a.click();
 }
 
+function saveJson(title,strJson){
+    var a = document.createElement("a");
+    var dataStr = "data:application/json;charset=utf-8," + strJson;
+    a.setAttribute("href",     dataStr     );
+    a.setAttribute("download", title + ".json");
+    a.click();
+}
+
 function sign() {
     var cryptoObj = window.crypto || window.msCrypto;
 
@@ -129,26 +138,26 @@ function sign() {
 }
 
 function verify() {
-var start = new Date();
-var cryptoObj = window.crypto || window.msCrypto;
+    var start = new Date();
+    var cryptoObj = window.crypto || window.msCrypto;
 
-if(!cryptoObj)
-{
-    alert("Crypto API is not supported by the Browser");
-    return;
-}
+    if(!cryptoObj)
+    {
+        alert("Crypto API is not supported by the Browser");
+        return;
+    }
 
-var encryptedData = document.getElementById("encryptedData").value;
-var transData = document.getElementById("transData").value;
-var tx = {"recipientKey":JSON.parse(recipientKeyJson)["n"],"credit":parseFloat(transData)};
+    var encryptedData = document.getElementById("encryptedData").value;
+    var transData = document.getElementById("transData").value;
+    var tx = {"recipientKey":JSON.parse(recipientKeyJson)["n"],"credit":parseFloat(transData)};
 
-if(!publicKey)
-{
-    alert("Generate Keys First")
-    return;
-}
+    if(!publicKey)
+    {
+        alert("Generate Keys First")
+        return;
+    }
 
-window.crypto.subtle.verify({
+    window.crypto.subtle.verify({
             name: ENCRYPTION_STANDARD,
             saltLength: SALT_SIZE,
         },
@@ -259,4 +268,81 @@ function importKeys() {
 
     }
     reader.readAsText(file);
+}
+
+function importTransaction() {
+    var file = document.querySelector('#transaction-file').files[0];
+    var reader = new FileReader()
+    reader.onload = function (event) {        
+        var tx = JSON.parse(event.target.result);
+        var pubKey;
+        bImportKey(tx["senderKey"],["verify"]).then(result => {pubKey = result})  
+        var sig = tx["signature"]; 
+        /*
+        var privKey = keypair["private"]
+        var pubKey = keypair["public"]
+        privateKeyJson = JSON.stringify(privKey);
+        publicKeyJson = JSON.stringify(pubKey);
+        document.getElementById("private").value = JSON.stringify(privKey);
+        document.getElementById("public").value = JSON.stringify(pubKey);      
+        bImportKey(privKey,["sign"]).then(result => {privateKey = result});
+        bImportKey(pubKey,["verify"]).then(result => {publicKey = result});
+        */
+
+        window.crypto.subtle.verify({
+                name: ENCRYPTION_STANDARD,
+                saltLength: SALT_SIZE,
+            },
+            pubKey, 
+            hexStringToUint8Array(sig), 
+            asciiToUint8Array(JSON.stringify({"credit":tx["credit"],"recipientKey":tx["recipientKey"]}))
+        )
+        .then(function(decrypted) {
+            var elapsed = new Date() - start
+            alert("Imported Transaction Verified   " + decrypted + " in " + elapsed + " ms");
+        })
+        .catch(function(err) {
+            console.error(err);
+        });
+
+    }
+    reader.readAsText(file);
+}
+
+function exportTransaction() {
+    var cryptoObj = window.crypto || window.msCrypto;
+
+    if(!cryptoObj)
+    {
+        alert("Unsupported Browser");
+        return;
+    }
+    
+    if(!recipientKey){
+        alert("Please add a recipient");
+        return;
+    }
+
+    var transData = document.getElementById("transData").value;
+
+    var tx = {"recipientKey":JSON.parse(recipientKeyJson)["n"],"credit":parseFloat(transData)};
+
+    window.crypto.subtle.sign({
+            name: ENCRYPTION_STANDARD,
+            saltLength: SALT_SIZE,
+        },
+        privateKey,
+        asciiToUint8Array(JSON.stringify(tx)) 
+    )
+    .then(function(signature) {
+        var sig = bytesToHexString(signature);
+        document.getElementById("encryptedData").value = sig;
+        tx["signature"] = sig;
+        tx["senderKey"] = JSON.parse(publicKeyJson)
+        //console.log();
+        saveJson('transaction',JSON.stringify(tx));
+    })
+    .catch(function(err) {
+        console.error(err);
+    });
 }

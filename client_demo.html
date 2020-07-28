@@ -11,6 +11,7 @@
     <div>
         
         Import Personal Keys: <input id="key-file" type="file" onchange="importKeys()"> OR <button type="button" class="btn btn-primary" onclick="generate()">Generate New Personal Keys</button><br>
+        Import Transaction File: <input id="transaction-file" type="file" onchange="importTransaction()"><br>
         Import Recipient Public Key: <input id="recipient-key-file" type="file" onchange="importRecipientKey()"><br>
         <!--
         Import Public Key: <input id="public-key-file" type="file" onchange="importKeyFile('public')"><br>
@@ -29,6 +30,7 @@
         
         <button type="button" class="btn btn-primary" onclick="sign()">Sign</button>
         <button type="button" class="btn btn-primary" onclick="verify()">Verify Signature </button>
+        <button type="button" class="btn btn-primary" onclick="exportTransaction()">Export Transaction </button>
         
     </div>
     <div>
