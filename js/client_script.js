@@ -7,6 +7,24 @@ var publicKeyJson;
 var privateKeyJson;
 var recipientKeyJson;
 var transactionJson;
+var transTS;
+var transID;
+
+
+function uuidv4() {
+  return ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c =>
+    (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
+  );
+}
+
+function setup()
+{
+    uuid = uuidv4();
+    transTS = new Date().toISOString();
+    //document.getElementById("transTimestamp").value = transTS.toString();
+    console.log(transTS);
+    console.log(uuid);
+}
 
 function asciiToUint8Array(str) {
     var chars = [];
@@ -113,9 +131,12 @@ function sign() {
         return;
     }
 
+    transID = uuidv4();
+    transTS = new Date().toISOString();
+
     var transData = document.getElementById("transData").value;
 
-    var tx = {"recipientKey":JSON.parse(recipientKeyJson)["n"],"credit":parseFloat(transData)};
+    var tx = {"recipientKey":JSON.parse(recipientKeyJson)["n"],"credit":parseFloat(transData),"id":transID,"ts":transTS};
 
     window.crypto.subtle.sign({
             name: ENCRYPTION_STANDARD,
@@ -149,7 +170,7 @@ function verify() {
 
     var encryptedData = document.getElementById("encryptedData").value;
     var transData = document.getElementById("transData").value;
-    var tx = {"recipientKey":JSON.parse(recipientKeyJson)["n"],"credit":parseFloat(transData)};
+    var tx = {"recipientKey":JSON.parse(recipientKeyJson)["n"],"credit":parseFloat(transData),"id":transID,"ts":transTS};
 
     if(!publicKey)
     {
@@ -325,7 +346,7 @@ function exportTransaction() {
 
     var transData = document.getElementById("transData").value;
 
-    var tx = {"recipientKey":JSON.parse(recipientKeyJson)["n"],"credit":parseFloat(transData)};
+    var tx = {"recipientKey":JSON.parse(recipientKeyJson)["n"],"credit":parseFloat(transData),"id":transID,"ts":transTS};
 
     window.crypto.subtle.sign({
             name: ENCRYPTION_STANDARD,

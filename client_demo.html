@@ -16,8 +16,11 @@
         <!--
         Import Public Key: <input id="public-key-file" type="file" onchange="importKeyFile('public')"><br>
         Import Private Key: <input id="private-key-file" type="file" onchange="importKeyFile('private')"><br>
+        Transaction Number: <input type="number" class="form-control" name="transNumber" min="1" value="1" id="transNumber"><br>
         -->
         Recipient Key: <textarea class="form-control" readonly="true" name="recipient" id="recipient" cols="30" rows="10"></textarea><br>
+        
+        Transaction Timestamp: <input type="string" class="form-control" name="transTimestamp" id="transTimestamp"><br>
         Credit: <input type="number" class="form-control" name="transData" min="0" value="0" id="transData"><br>
         Signature: <input class="form-control" type="text" size="90" name="encryptedData" id="encryptedData" readonly="true"><br>
         
