@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 import sqlite3
-from flask import Flask,g,jsonify,render_template
+from flask import Flask,g,jsonify,render_template, request
 from flask_cors import CORS
 import random
 
@@ -49,6 +49,10 @@ def touched():
     print("touched")
     return '{"success":"true"}'
 
+@app.route('/repeat',strict_slashes=False, methods = ['POST'])
+def repeat():
+    print(request.get_json())
+    return '{"success":"true"}'
 
 @app.route('/deploy',strict_slashes=False)
 def deploy():

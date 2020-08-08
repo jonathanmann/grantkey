@@ -9,6 +9,7 @@ var recipientKeyJson;
 var transactionJson;
 var transTS;
 var transID;
+var sigStr;
 
 
 function uuidv4() {
@@ -148,6 +149,7 @@ function sign() {
     .then(function(signature) {
         var sig = bytesToHexString(signature);
         document.getElementById("encryptedData").value = sig;
+        sigStr = sig;
         tx["signature"] = sig;
         tx["senderKey"] = JSON.parse(publicKeyJson)
         console.log(tx);
@@ -329,6 +331,39 @@ function importTransaction() {
     }
     reader.readAsText(file);
 }
+function submitTransaction() {
+        // Creating a XHR object 
+        let xhr = new XMLHttpRequest(); 
+        let url = "http://0.0.0.0:5000/repeat"; 
+    
+        // open a connection 
+        xhr.open("POST", url, true); 
+        //xhr.open("GET", url);
+        //xhr.send(); 
+
+        
+        // Set the request header i.e. which type of content you are sending 
+        xhr.setRequestHeader("Content-Type", "application/json"); 
+     
+        // Create a state change callback 
+        xhr.onreadystatechange = function () { 
+            if (xhr.readyState === 4 && xhr.status === 200) { 
+
+                // Print received data from server 
+                console.log(this.responseText);
+                //result.innerHTML = this.responseText; 
+
+            } 
+        }; 
+
+        // Converting JSON data to string 
+        transData = document.getElementById("transData").value;
+        var data = JSON.stringify({ "id": transID, "sender": JSON.parse(publicKeyJson)["n"], "recipient": JSON.parse(recipientKeyJson)["n"],"credit":parseFloat(transData), "signature":sigStr}); 
+
+        // Sending data with the request 
+        xhr.send(data); 
+        
+}
 
 function exportTransaction() {
     var cryptoObj = window.crypto || window.msCrypto;
@@ -344,7 +379,7 @@ function exportTransaction() {
         return;
     }
 
-    var transData = document.getElementById("transData").value;
+    transData = document.getElementById("transData").value;
 
     var tx = {"recipientKey":JSON.parse(recipientKeyJson)["n"],"credit":parseFloat(transData),"id":transID,"ts":transTS};
 
