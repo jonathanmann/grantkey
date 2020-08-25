@@ -1,5 +1,6 @@
-var ENCRYPTION_STANDARD = "RSA-PSS"
-var SALT_SIZE = 128
+//const ENCRYPTION_STANDARD = "RSA-PSS"
+const ENCRYPTION_STANDARD = "RSASSA-PKCS1-v1_5"
+const SALT_SIZE = 128
 var privateKey;
 var publicKey;
 var recipientKey;
@@ -10,6 +11,13 @@ var transactionJson;
 var transTS;
 var transID;
 var sigStr;
+const algo = {
+        name: ENCRYPTION_STANDARD,
+        saltLength: SALT_SIZE,
+        modulusLength: 2048, 
+        publicExponent: new Uint8Array([0x01, 0x00, 0x01]),
+        hash: { name: 'SHA-256' }
+    };
 
 
 function uuidv4() {
@@ -35,13 +43,7 @@ function asciiToUint8Array(str) {
 }
 
 function generate() {
-    window.crypto.subtle.generateKey({
-            name: ENCRYPTION_STANDARD,
-            saltLength: SALT_SIZE,
-            modulusLength: 2048, 
-            publicExponent: new Uint8Array([0x01, 0x00, 0x01]),
-            hash: {name: "SHA-256"}, 
-        },
+    window.crypto.subtle.generateKey(algo,
         true, 
         ["sign", "verify"]
     )
@@ -137,12 +139,11 @@ function sign() {
 
     var transData = document.getElementById("transData").value;
 
-    var tx = {"recipientKey":JSON.parse(recipientKeyJson)["n"],"credit":parseFloat(transData),"id":transID,"ts":transTS};
+    var tx = {"recipientKey":JSON.parse(recipientKeyJson)["n"],"credit":parseFloat(transData),"id":transID};
 
-    window.crypto.subtle.sign({
-            name: ENCRYPTION_STANDARD,
-            saltLength: SALT_SIZE,
-        },
+    console.log(JSON.stringify(tx))
+
+    window.crypto.subtle.sign(algo,
         privateKey,
         asciiToUint8Array(JSON.stringify(tx)) 
     )
@@ -172,7 +173,7 @@ function verify() {
 
     var encryptedData = document.getElementById("encryptedData").value;
     var transData = document.getElementById("transData").value;
-    var tx = {"recipientKey":JSON.parse(recipientKeyJson)["n"],"credit":parseFloat(transData),"id":transID,"ts":transTS};
+    var tx = {"recipientKey":JSON.parse(recipientKeyJson)["n"],"credit":parseFloat(transData),"id":transID};
 
     if(!publicKey)
     {
@@ -180,10 +181,7 @@ function verify() {
         return;
     }
 
-    window.crypto.subtle.verify({
-            name: ENCRYPTION_STANDARD,
-            saltLength: SALT_SIZE,
-        },
+    window.crypto.subtle.verify(algo,
         publicKey, 
         hexStringToUint8Array(encryptedData), 
         asciiToUint8Array(JSON.stringify(tx))
@@ -235,13 +233,7 @@ function hexStringToUint8Array(hexString) {
 }
 
 async function bImportKey(k,usage) {
-    const algo = {
-        name: ENCRYPTION_STANDARD,
-        saltLength: SALT_SIZE,
-        modulusLength: 2048, 
-        publicExponent: new Uint8Array([0x01, 0x00, 0x01]),
-        hash: { name: 'SHA-256' }
-    };
+    
     return await window.crypto.subtle.importKey('jwk', k, algo, true, usage);
 }
 
@@ -312,10 +304,7 @@ function importTransaction() {
         bImportKey(pubKey,["verify"]).then(result => {publicKey = result});
         */
 
-        window.crypto.subtle.verify({
-                name: ENCRYPTION_STANDARD,
-                saltLength: SALT_SIZE,
-            },
+        window.crypto.subtle.verify(algo,
             pubKey, 
             hexStringToUint8Array(sig), 
             asciiToUint8Array(JSON.stringify({"credit":tx["credit"],"recipientKey":tx["recipientKey"]}))
@@ -381,12 +370,9 @@ function exportTransaction() {
 
     transData = document.getElementById("transData").value;
 
-    var tx = {"recipientKey":JSON.parse(recipientKeyJson)["n"],"credit":parseFloat(transData),"id":transID,"ts":transTS};
+    var tx = {"recipientKey":JSON.parse(recipientKeyJson)["n"],"credit":parseFloat(transData),"id":transID};
 
-    window.crypto.subtle.sign({
-            name: ENCRYPTION_STANDARD,
-            saltLength: SALT_SIZE,
-        },
+    window.crypto.subtle.sign(algo,
         privateKey,
         asciiToUint8Array(JSON.stringify(tx)) 
     )

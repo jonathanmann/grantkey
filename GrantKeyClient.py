@@ -3,9 +3,11 @@ from os import chmod,path
 from Crypto.PublicKey import RSA
 from Crypto.Signature.pkcs1_15 import PKCS115_SigScheme
 from Crypto.Hash import SHA256
-import binascii
 import uuid
 from datetime import datetime
+import requests
+import tkinter as tk
+
     
 
 class GrantKeyClient:
@@ -100,11 +102,40 @@ class GrantKeyClient:
     def validate_file(self,validation_key,validation_signature,file_path):
         pass
 
+    def submit_transaction(self):
+        r = requests.post('http://0.0.0.0:5000/repeat',json={'this':100,'that':10})
+        print(r.status_code,r.reason,r.text)
+
 if __name__ == '__main__':
+    window = tk.Tk()
+    greeting = tk.Label(
+        text="Grantkey Client",
+        fg="white",
+        bg="black",
+        width=100,
+        height=10,
+    )
+    button = tk.Button(
+        text="Click me!",
+        width=25,
+        height=5,
+        bg="blue",
+        fg="yellow",
+    )
+    host_name = tk.Entry(fg="yellow", bg="blue", width=50)
+    greeting.pack()
+    button.pack()
+    host_name.pack()
+    
+
+    window.mainloop()
+"""
     g = GrantKeyClient()
     s = g.get_msg_signature('hello world')
     k = g.public_key
-    r = g.get_recipient_key('config/pubkey2.pem')
+    #r = g.get_recipient_key('config/pubkey2.pem')
     print(g.validate_signature('hello world',s,k))
-    print(g.export_transaction(r,100))
+    g.submit_transaction()
+    #print(g.export_transaction(r,100))
+"""
 
